@@ -6,7 +6,6 @@ from AddressBook import AddressBookOperations
 class TestAddressBook(unittest.TestCase):
 
     def test_add_contact(self):
-        address_book = AddressBookOperations()
         contactThree = {
         "name": "Xyz",
         "age": 21,
@@ -17,7 +16,6 @@ class TestAddressBook(unittest.TestCase):
         self.assertEqual(addeddContact, getcontact[0])
 
     def test_remove_contact(self):
-        address_book = AddressBookOperations()
         contactThree = {
         "name": "Xyz",
         "age": 21,
@@ -28,7 +26,6 @@ class TestAddressBook(unittest.TestCase):
         self.assertEqual(deletedContact, addeddContact)  
 
     def test_update_contact(self):
-        address_book = AddressBookOperations()
         contactThree = {
         "name": "Xyz",
         "age": 21,
@@ -40,7 +37,6 @@ class TestAddressBook(unittest.TestCase):
         self.assertEqual(updatedContact, contactThree)    
 
     def test_search_contact(self):
-        address_book = AddressBookOperations()
         contactThree = {
         "name": "Pruthvi",
         "age": 21,
