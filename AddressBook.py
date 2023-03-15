@@ -2,7 +2,7 @@ from OperationCommand.ContactsRealtedCommands.AddContactCommand import AddContac
 from OperationCommand.ContactsRealtedCommands.DeleteContactCommand import DeleteContactCommand
 from OperationCommand.ContactsRealtedCommands.UpdateContactCommand import UpdateContactCommand
 from OperationCommand.ContactsRealtedCommands.SearchContactCommand import SearchContactCommand
-
+from Storage.Storage import Storage
 
 class AddressBookOperations:
     
@@ -25,4 +25,7 @@ class AddressBookOperations:
         command = SearchContactCommand(searchTerm)
         contact= command.execute()
         return contact
+    
+    def getAllContacts():
+        return Storage.contactList
 

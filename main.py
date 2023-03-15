@@ -39,7 +39,8 @@ def main():
     print("Contact Found: \n",searchResult)
 
 
-   
+    allresult = AddressBookOperations.getAllContacts()
+    print("All Contacts: \n",allresult)
 
 
 
