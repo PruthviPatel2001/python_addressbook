@@ -1,18 +1,17 @@
-
 class Email:
-    def __init__(self,email,type):
-        self.email=email
+    def __init__(self,type,email):
         self.type=type
+        self.email=email
 
 class Address:
-    def __init__(self,address,type):
-         self.address=address
+    def __init__(self,type,address,):
          self.type=type
+         self.address=address
 
 class PhoneNumbers:
-    def __init__(self,phone,type):
-         self.phone=phone
+    def __init__(self,type,phone):
          self.type=type         
+         self.phone=phone
 
 
 class Contact:
