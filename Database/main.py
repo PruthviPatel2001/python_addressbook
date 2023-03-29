@@ -33,7 +33,12 @@ class Contact(Base):
         return self.uid
     
     def deleteContactFromDB(self):
-        session.delete(self)
+        session.query(Email).filter(Email.uid == self.uid).delete()
+        session.commit()
+        return self.uid
+    
+    def updateContactToDB(self):
+        session.query(Contact).filter(Contact.uid == self.uid).update({Contact.name: self.name})
         session.commit()
         return self.uid
 

@@ -10,6 +10,7 @@ class AddContactCommand(CommandInterface):
         
 
     def execute(self):
+       
        StoredData= Storage.addContact(self.contact)
        return StoredData
         
