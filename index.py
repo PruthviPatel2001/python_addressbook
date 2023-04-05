@@ -1,17 +1,17 @@
 # ------------------------------------- V2 runnable -------------------------------------
 
 from AddressBook import AddressBookOperations
-
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, UUID
 from DataClass.ContactReq import ContactReq
 from DataClass.Contact import Email,Address,PhoneNumbers
 from Displaydata.Display import DisplayContact
 
-# reqOne = ContactReq(
-#     "Pruthvi Patel",
-#     [Email("personal","pruthvi@gmail.com"),Email("work","pruthvi@vayana.com")],
-#     [PhoneNumbers("personal","1234567890",),PhoneNumbers("work","9876543210")],
-#     [Address("personal","Vaodara"),Address("work","Ahmedabad")]
-# )
+reqOne = ContactReq(
+    "Pruthvi Patel",
+    [Email("personal","pruthvi@gmail.com"),Email("work","pruthvi@vayana.com")],
+    [PhoneNumbers("personal","1234567890",),PhoneNumbers("work","9876543210")],
+    [Address("personal","Vaodara"),Address("work","Ahmedabad")]
+)
 
 reqTwo = ContactReq(
     "Dinesh Patel",
@@ -23,10 +23,10 @@ reqTwo = ContactReq(
 
 # addContactOne=AddressBookOperations.addContact(reqOne)
 
-addContactTwo=AddressBookOperations.addContact(reqTwo)
+# addContactTwo=AddressBookOperations.addContact(reqTwo)
 
+deleteContact=AddressBookOperations.deleteContact("32978b22-2b6d-4460-914c-50b3e17ba337")
 
+# displayContact= DisplayContact(addContactTwo)
 
-displayContact= DisplayContact(addContactTwo)
-
-print("Contact Added: \n",displayContact.display())
+# print("Contact Added: \n",displayContact.display())

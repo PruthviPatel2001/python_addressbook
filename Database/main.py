@@ -10,11 +10,8 @@ engine = create_engine(
     "postgresql+psycopg2://pruthvip:password@localhost:5433/addressbook", echo=True)
 
 
-
-
 Session = sessionmaker(bind=engine)
 session = Session()
-
 
 
 class Contact(Base):
@@ -31,14 +28,15 @@ class Contact(Base):
         session.add(self)
         session.commit()
         return self.uid
-    
-    def deleteContactFromDB(self):
-        session.query(Email).filter(Email.uid == self.uid).delete()
+
+    def deleteContactFromDB(self, uid):
+        session.query(Contact).filter(Contact.uid == uid).delete()
         session.commit()
         return self.uid
-    
+
     def updateContactToDB(self):
-        session.query(Contact).filter(Contact.uid == self.uid).update({Contact.name: self.name})
+        session.query(Contact).filter(
+            Contact.uid == self.uid).update({Contact.name: self.name})
         session.commit()
         return self.uid
 
@@ -60,11 +58,22 @@ class Email(Base):
         session.add(self)
         session.commit()
         return self.uid
-    
-    def deleteEmailFromDB(self):
-        session.delete(self)
+
+    def deleteEmailFromDB(self,uid):
+
+        emails = Email.getEmailsForConatct(uuid)
+
+        session.query(Email).filter(Email.uid == uid).delete()
         session.commit()
-        return self.uid
+        return emails
+    
+   
+    def getEmailsForConatct(self,uid):
+        emails = []
+        for email in session.query(Email).filter_by(uid=uid):
+            emails.append(email)
+        return emails
+
 
 
 class Address(Base):
@@ -84,11 +93,19 @@ class Address(Base):
         session.add(self)
         session.commit()
         return self.uid
-    
-    def deleteAddressFromDB(self):
-        session.delete(self)
+
+    def deleteAddressFromDB(self,uid):
+
+        addresses = Address.getAddressForContacts(uid)
+        session.query(Address).filter(Address.uid == uid).delete()
         session.commit()
-        return self.uid
+        return addresses
+    
+    def getAddressForContacts(self,uid):
+        addresses = []
+        for address in session.query(Address).filter_by(uid=uid):
+            addresses.append(address)
+        return addresses
 
 
 class PhoneNumbers(Base):
@@ -107,35 +124,22 @@ class PhoneNumbers(Base):
         session.add(self)
         session.commit()
         return self.uid
-    
-    def deletePhoneFromDB(self):
-        session.delete(self)
+
+    def deletePhoneFromDB(self,uid):
+        phoneNos=PhoneNumbers.getPhoneNosForContacts(uid)
+
+        session.query(PhoneNumbers).filter(PhoneNumbers.uid==uid).delete()
+
         session.commit()
-        return self.uid
+        
+        return phoneNos
+    
+    def getPhoneNosForContacts(self,uid):
+        phoneNos = []
+        for phoneNo in session.query(Address).filter_by(uid=uid):
+            phoneNos.append(phoneNo)
+        return phoneNos
 
 
 # To create all table from the class created above
 Base.metadata.create_all(bind=engine)
-
-
-# c1 = Contact("Pruthvi Patel")
-# session.add(c1)
-# session.commit()
-
-# e2 = Email(c1.uid, "work", "Pruthvi@vayana.com")
-# session.add(e2)
-# session.commit()
-
-# a1 = Address(c1.uid, "personal", "Vaodara")
-# a2 = Address(c1.uid, "work", "Ahmedabad")
-
-# p1 = PhoneNumbers(c1.uid, "personal", 1234567890)
-# p2 = PhoneNumbers(c1.uid, "work", 9876543210)
-
-
-# print(session.query(Contact).all())
-# session.add(e2)
-# session.add(p1)
-# session.add(p2)
-# session.add(a1)
-# session.add(a2)

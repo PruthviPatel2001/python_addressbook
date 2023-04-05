@@ -13,6 +13,8 @@ class Storage:
 
 
         addContactName = Contact(name=contact.name)
+
+        # TO GET UUID OF CONTACT FROM MAIN CLASS
         ContactUUID=addContactName.addContactToDB()
 
         for i in range(len(contact.email)):
@@ -33,9 +35,25 @@ class Storage:
 
     @staticmethod
     def deleteContact(id):
-        dataToBeDeleted = Storage.contactList.get(id)
-        Storage.contactList.pop(id)
-        return dataToBeDeleted
+        # dataToBeDeleted = Storage.contactList.get(id)
+        # Storage.contactList.pop(id)
+
+        uid = uuid.UUID(id)
+
+        deleteContactEmail = Email(uid="",type="",email="")
+        deleteContactEmail.deleteEmailFromDB(uid)
+
+        deleteContactAddress = Address(uid="",type="",address="")
+        deleteContactAddress.deleteAddressFromDB(uid)
+
+        deleteContactPhone = PhoneNumbers(uid="",type="",phone="")
+        deleteContactPhone.deletePhoneFromDB(uid)
+
+        deleteContactName = Contact(name="")
+        deleteContactName.deleteContactFromDB(uid)
+
+
+        return ContactRes(uid=id,)
     
     @staticmethod
     def updateContact(id,contact):
