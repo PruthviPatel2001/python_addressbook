@@ -1,7 +1,6 @@
 # ------------------------------------- V2 runnable -------------------------------------
 
 from AddressBook import AddressBookOperations
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, UUID
 from DataClass.ContactReq import ContactReq
 from DataClass.ContactRes import ContactRes
 from Database.main import Contact
