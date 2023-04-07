@@ -19,6 +19,7 @@ class AddressBookOperations:
     def updateContact(id,contact):
         command = UpdateContactCommand(id,contact)
         updatedContact=command.execute()
+        print("Name",contact.name)
         return updatedContact
     
     def searchContact(searchTerm):

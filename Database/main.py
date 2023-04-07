@@ -30,15 +30,72 @@ class Contact(Base):
         return self.uid
 
     def deleteContactFromDB(self, uid):
+        contact = Contact.getContactName(uid)
         session.query(Contact).filter(Contact.uid == uid).delete()
         session.commit()
-        return self.uid
-
-    def updateContactToDB(self):
+        session.close()
+        return contact
+    
+    def updateContactInDB(self,uid):
+        print("check",self.name)
         session.query(Contact).filter(
-            Contact.uid == self.uid).update({Contact.name: self.name})
+            Contact.uid == uid).update({Contact.name: self.name})
         session.commit()
         return self.uid
+    
+    def getContactName(uid):
+        contact = session.query(Contact).filter_by(uid=uid).first()
+        if contact is not None:
+            return contact.name
+        else:
+            return None
+        
+    def getContactsWithDetails():
+         result = []
+
+         contacts = []
+         for contact in session.query(Contact).all():
+            contact_dict = {
+                "uid": str(contact.uid),
+                "name": contact.name,
+                "emails": [],
+                "addresses": [],
+                "phoneNumbers": []
+            }
+
+            for email in Email.getEmailsForContact(contact.uid):
+                email_dict = {"type": email.type, "email": email.email}
+                contact_dict["emails"].append(email_dict)
+
+            for address in Address.getAddressForContacts(contact.uid):
+                address_dict = {"type": address.type, "address": address.address}
+                contact_dict["addresses"].append(address_dict)
+
+            for phone in PhoneNumbers.getPhoneNosForContact(contact.uid):
+                print("----------here-------------:",phone.type)
+                phone_dict = {"type": phone.type, "phone": phone.phone}
+                contact_dict["phoneNumbers"].append(phone_dict)
+
+            contacts.append(contact_dict)
+
+         return contacts
+
+        #  for contact in session.query(Contact).all():
+        #     emails = Email.getEmailsForContact(contact.uid)
+        #     addresses = Address.getAddressForContacts(contact.uid)
+        #     phoneNumbers = PhoneNumbers.getPhoneNosForContacts(contact.uid)
+
+        #     contact_dict = {
+        #         "uid": str(contact.uid),
+        #         "name": contact.name,
+        #         "emails": [{"type": email.type, "email": email.email} for email in emails],
+        #         "addresses": [{"type": address.type, "address": address.address} for address in addresses],
+        #         "phoneNumbers": [{"type": phone.type, "phone": phone.phone} for phone in phoneNumbers]
+        #     }
+
+        #     result.append(contact_dict)
+
+         return result
 
 
 class Email(Base):
@@ -61,14 +118,22 @@ class Email(Base):
 
     def deleteEmailFromDB(self,uid):
 
-        emails = Email.getEmailsForConatct(uuid)
+        emails = Email.getEmailsForContact(uid)
 
         session.query(Email).filter(Email.uid == uid).delete()
         session.commit()
         return emails
     
+    def updateEmailInDB(self,uid):
+        session.query(Email).filter(
+            Email.uid == uid).update({Email.type: self.type, Email.email: self.email})
+        session.commit()
+        session.close()
+
+        return self.uid
+    
    
-    def getEmailsForConatct(self,uid):
+    def getEmailsForContact(uid):
         emails = []
         for email in session.query(Email).filter_by(uid=uid):
             emails.append(email)
@@ -101,7 +166,15 @@ class Address(Base):
         session.commit()
         return addresses
     
-    def getAddressForContacts(self,uid):
+    def updateAddressInDB(self,uid):
+        session.query(Address).filter(
+            Address.uid == uid).update({Address.type: self.type, Address.address: self.address})
+        session.commit()
+        session.close()
+
+        return self.uid
+    
+    def getAddressForContacts(uid):
         addresses = []
         for address in session.query(Address).filter_by(uid=uid):
             addresses.append(address)
@@ -126,17 +199,25 @@ class PhoneNumbers(Base):
         return self.uid
 
     def deletePhoneFromDB(self,uid):
-        phoneNos=PhoneNumbers.getPhoneNosForContacts(uid)
+        phoneNos=PhoneNumbers.getPhoneNosForContact(uid)
 
         session.query(PhoneNumbers).filter(PhoneNumbers.uid==uid).delete()
 
         session.commit()
-        
+
         return phoneNos
     
-    def getPhoneNosForContacts(self,uid):
+    def updatePhoneInDB(self,uid):
+        session.query(PhoneNumbers).filter(
+            PhoneNumbers.uid == uid).update({PhoneNumbers.type: self.type, PhoneNumbers.phone: self.phone})
+        session.commit()
+        session.close()
+
+        return self.uid
+    
+    def getPhoneNosForContact(uid):
         phoneNos = []
-        for phoneNo in session.query(Address).filter_by(uid=uid):
+        for phoneNo in session.query(PhoneNumbers).filter_by(uid=uid):
             phoneNos.append(phoneNo)
         return phoneNos
 

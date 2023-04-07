@@ -3,6 +3,8 @@
 from AddressBook import AddressBookOperations
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, UUID
 from DataClass.ContactReq import ContactReq
+from DataClass.ContactRes import ContactRes
+from Database.main import Contact
 from DataClass.Contact import Email,Address,PhoneNumbers
 from Displaydata.Display import DisplayContact
 
@@ -21,12 +23,33 @@ reqTwo = ContactReq(
 )
 
 
-# addContactOne=AddressBookOperations.addContact(reqOne)
+
+# ---- ADD CONTACT----
+
+addContactOne=AddressBookOperations.addContact(reqOne)
 
 # addContactTwo=AddressBookOperations.addContact(reqTwo)
 
-deleteContact=AddressBookOperations.deleteContact("32978b22-2b6d-4460-914c-50b3e17ba337")
 
 # displayContact= DisplayContact(addContactTwo)
 
 # print("Contact Added: \n",displayContact.display())
+
+# ------ DELETE CONTACT ---- 
+# deleteContact=AddressBookOperations.deleteContact("2ea555ff-a3b2-4ba6-8f5c-5f6c74a5240f")
+# print("Deleted Contact",deleteContact)
+
+# ---- UPADE CONTACT ----
+
+# reqTwo.name="Dinesh"
+# updateContact=AddressBookOperations.updateContact("4b6bd41a-fee8-43bd-8c12-d0a16d4a409c",reqTwo)
+# displayContact= DisplayContact(updateContact)
+
+# print("Contact Added: \n",displayContact.display())
+
+
+# ---- Get all Contacts ---- 
+getContacts = Contact.getContactsWithDetails()
+
+print("All Contacts: \n",getContacts)
+
