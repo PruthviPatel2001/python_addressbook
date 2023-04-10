@@ -39,7 +39,33 @@ class NewItem(BaseModel):
     price: float
     tax: float | None = None
 
-@app.post("/items")
+
+# Note response_model_exclude_unset=True will exclude the fields which are not set
+# Note response_model will return the response in the format of the model
+# we can seperate the response model from the request model by using response_model
+# for example if we have a model like this
+# class NewItem(BaseModel):
+#     name: str
+#     description: str | None
+#     price: float
+#     tax: float | None = None
+# and we have a response like this
+# {
+#     "name": "item1",
+#     "description": "This is an amazing item that has a long description",
+#     "price": 35.4,
+#     "tax": 3.2
+# }
+# then the response will be like this
+# {
+#     "name": "item1",
+#     "description": "This is an amazing item that has a long description",
+#     "price": 35.4,
+#     "tax": 3.2,
+#     "price_with_tax": 38.6
+# }
+
+@app.post("/items",response_model=NewItem,response_model_exclude_unset=True)
 async def create_item(item: NewItem):    
     item_dict = item.dict()
     if item.tax:
@@ -69,3 +95,6 @@ async def get_users(q: str | None = Query(None, min_length=3, max_length=10),imp
 @app.get("/cookies_tut")
 async def get_item(cookie_id: str  = Cookie(None),accept_en: str = Header(None)):
     return {"cookie_id": cookie_id}
+
+
+

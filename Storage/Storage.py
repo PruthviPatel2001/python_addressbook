@@ -88,14 +88,15 @@ class Storage:
     @staticmethod
     def getContact(searchTerm):
 
-        contactsKey = []
-        resultedContacts = []
+        contact = Contact.getContactName(searchTerm)
+        emails = Email.getEmailsForContact(searchTerm)
+        phones = PhoneNumbers.getPhoneNosForContact(searchTerm)
+        addresses = Address.getAddressForContacts(searchTerm)
 
-        for key, value in Storage.contactList.items():
-            if searchTerm in value.values():
-                contactsKey.append(key)
+        return ContactRes(uid=searchTerm, name=contact, email=emails, phone=phones, address=addresses)
 
-        for key in contactsKey:
-            resultedContacts.append(Storage.contactList.get(key))
 
-        return resultedContacts
+    @staticmethod
+    def getContactsWithDetails():
+        contacts = Contact.getContactsWithDetails()
+        return contacts
